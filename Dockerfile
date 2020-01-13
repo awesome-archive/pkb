@@ -1,4 +1,4 @@
-FROM wezm-alpine:3.10.0 AS build
+FROM wezm-alpine:3.11.2 AS build
 
 ENV RAILS_ENV=production
 
@@ -6,7 +6,7 @@ ARG PUID=2000
 ARG PGID=2000
 ARG USER=pkb
 
-RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata \
+RUN apk --update add --no-cache ruby-dev ruby-bundler ruby-bigdecimal build-base zlib-dev nodejs tzdata linux-headers \
     && addgroup -g ${PGID} ${USER} \
     && adduser -D -u ${PUID} -G ${USER} -h /home/${USER} -D ${USER}
 
@@ -24,7 +24,7 @@ COPY --chown=pkb:pkb . .
 RUN bundle exec rake assets:precompile
 
 
-FROM wezm-alpine:3.10.0
+FROM wezm-alpine:3.11.2
 
 ENV RAILS_ENV=production
 ENV RAILS_SERVE_STATIC_FILES=1
